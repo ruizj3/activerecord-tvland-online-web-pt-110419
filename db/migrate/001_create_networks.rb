@@ -1,13 +1,14 @@
-class CreateNetworks < ActiveRecord::Migration[5.2]
-  #define a change method in which to do the migration
-  def change
-    create_table :networks do |t| #we get a block variable here for the table
-      #primary key of :id is created for us!
-      # defining columns is as simple as t.[datatype] :column
-      t.string :call_letters
-      # the above breaks down to
-      # "create a column called :call_letters on table t with type string
-      t.integer :channel
+class Actor < ActiveRecord::Base
+  has_many :characters
+  has_many :shows, through: :characters
+
+  def full_name
+    "#{self.first_name} #{self.last_name}"
+  end
+
+  def list_roles
+    characters.collect do |character|
+      "#{character.name} - #{character.show.name}"
     end
   end
 end
